@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, session, jsonify
 from test_model import generate_response_rule_based
 import uuid
 from datetime import datetime
+import os  # Added for environment variables
 
 # Set up logging configuration
 logging.basicConfig(
@@ -12,7 +13,8 @@ logging.basicConfig(
 )
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key_123'  # Needed for session management
+# Use environment variable for secret key in production, fallback for development
+app.secret_key = os.getenv('FLASK_SECRET_KEY', 'your_secret_key_123')
 
 # Custom filter to add session ID and IP to log records
 class SessionFilter(logging.Filter):
@@ -63,4 +65,4 @@ def end():
     return jsonify({'status': 'ended'})
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5000)

@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="chat-container">
-        <h1>AI Chatbot for Mental Health Suport</h1>
+        <h1>AI Chatbot for Mental Health Support</h1>
         <div class="chat-box" id="chat-box">
             {% if conversation %}
                 {% for speaker, message in conversation %}
@@ -32,83 +32,141 @@
             <button type="submit">Send</button>
         </form>
         <div class="button-group">
-            <form method="POST" action="/clear">
-                <button type="submit" class="clear-btn">Clear Chat</button>
-            </form>
-            <form method="POST" action="/end">
-                <button type="submit" class="end-btn">End Chat</button>
-            </form>
+            <button id="clear-btn" class="clear-btn">Clear Chat</button>
+            <button id="end-btn" class="end-btn">End Chat</button>
         </div>
     </div>
     <script>
-        // Handle form submission with AJAX
-        document.getElementById('chat-form').addEventListener('submit', function(event) {
+        const chatBox = document.getElementById('chat-box');
+        const typingIndicator = document.getElementById('typing-indicator');
+        const chatForm = document.getElementById('chat-form');
+        const userInputField = document.querySelector('input[name="user_input"]');
+
+        // Auto-scroll to the bottom on initial load
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        // Handle form submission with AJAX for /chat
+        chatForm.addEventListener('submit', async function(event) {
             event.preventDefault();
 
-            const input = document.querySelector('input[name="user_input"]');
-            const userInput = input.value.trim();
+            const userInput = userInputField.value.trim();
             if (!userInput) {
                 alert('Please enter a message to continue.');
-                input.value = '';
+                userInputField.value = '';
                 return;
             }
 
+            // Disable the form while processing
+            chatForm.classList.add('disabled');
+
             // Append user message to chat box
-            const chatBox = document.getElementById('chat-box');
             const userMessage = document.createElement('div');
             userMessage.className = 'message user-message';
-            userMessage.innerHTML = `<strong>You:</strong> ${userInput}`;
+            userMessage.innerHTML = `<strong>User:</strong> ${userInput}`;
             chatBox.appendChild(userMessage);
 
             // Show typing indicator
-            const typingIndicator = document.getElementById('typing-indicator');
             typingIndicator.style.display = 'block';
             chatBox.scrollTop = chatBox.scrollHeight;
 
             // Clear input
-            input.value = '';
+            userInputField.value = '';
 
             // Send AJAX request to /chat endpoint
             const formData = new FormData();
             formData.append('user_input', userInput);
 
-            const startTime = Date.now();
-            fetch('/chat', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                const elapsedTime = Date.now() - startTime;
-                const remainingTime = Math.max(0, 300 - elapsedTime);
-                return new Promise(resolve => setTimeout(() => resolve(response), remainingTime));
-            })
-            .then(response => response.json())
-            .then(data => {
+            try {
+                const startTime = Date.now();
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    body: formData
+                }).then(res => {
+                    if (!res.ok) throw new Error('Network response was not ok');
+                    const elapsedTime = Date.now() - startTime;
+                    const remainingTime = Math.max(0, 300 - elapsedTime);
+                    return new Promise(resolve => setTimeout(() => resolve(res), remainingTime));
+                }).then(res => res.json());
+
                 typingIndicator.style.display = 'none';
 
                 // Append bot response to chat box
                 const botMessage = document.createElement('div');
                 botMessage.className = 'message bot-message';
-                botMessage.innerHTML = `<strong>Bot:</strong> ${data.bot_response}`;
+                botMessage.innerHTML = `<strong>Bot:</strong> ${response.response}`;
                 chatBox.appendChild(botMessage);
 
                 // Auto-scroll to bottom
                 chatBox.scrollTop = chatBox.scrollHeight;
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error:', error);
                 typingIndicator.style.display = 'none';
                 const errorMessage = document.createElement('div');
-                errorMessage.className = 'message bot-message';
+                errorMessage.className = 'message error-message';
                 errorMessage.innerHTML = `<strong>Bot:</strong> Sorry, something went wrong. Please try again.`;
                 chatBox.appendChild(errorMessage);
                 chatBox.scrollTop = chatBox.scrollHeight;
-            });
+            } finally {
+                // Re-enable the form
+                chatForm.classList.remove('disabled');
+            }
         });
 
-        // Auto-scroll to the bottom on initial load
-        const chatBox = document.getElementById('chat-box');
-        chatBox.scrollTop = chatBox.scrollHeight;
+        // Handle clear chat with AJAX
+        document.getElementById('clear-btn').addEventListener('click', async function() {
+            try {
+                const response = await fetch('/clear', {
+                    method: 'POST'
+                }).then(res => {
+                    if (!res.ok) throw new Error('Failed to clear chat');
+                    return res.json();
+                });
+
+                if (response.status === 'cleared') {
+                    chatBox.innerHTML = '';
+                    const welcomeMessage = document.createElement('div');
+                    welcomeMessage.className = 'message bot-message';
+                    welcomeMessage.innerHTML = `<strong>Bot:</strong> Chat cleared. I'm here to help you with emotional support. Type your message below to start chatting.`;
+                    chatBox.appendChild(welcomeMessage);
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'message error-message';
+                errorMessage.innerHTML = `<strong>Bot:</strong> Unable to clear chat. Please try again.`;
+                chatBox.appendChild(errorMessage);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        });
+
+        // Handle end session with AJAX
+        document.getElementById('end-btn').addEventListener('click', async function() {
+            try {
+                const response = await fetch('/end', {
+                    method: 'POST'
+                }).then(res => {
+                    if (!res.ok) throw new Error('Failed to end session');
+                    return res.json();
+                });
+
+                if (response.status === 'ended') {
+                    chatBox.innerHTML = '';
+                    const welcomeMessage = document.createElement('div');
+                    welcomeMessage.className = 'message bot-message';
+                    welcomeMessage.innerHTML = `<strong>Bot:</strong> Session ended. I'm here to help you with emotional support. Type your message below to start chatting.`;
+                    chatBox.appendChild(welcomeMessage);
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'message error-message';
+                errorMessage.innerHTML = `<strong>Bot:</strong> Unable to end session. Please try again.`;
+                chatBox.appendChild(errorMessage);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        });
     </script>
 </body>
 </html>
