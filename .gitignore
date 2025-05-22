@@ -1,0 +1,9 @@
+_pycache_/ 
+*.pyc  
+synthetic_therapy_conversations.csv
+processed_synthetic_chatbot_data.csv
+output/model.safetensors
+session_logs.log
+tokenized_train.pkl
+tokenized_val.pkl
+venv/

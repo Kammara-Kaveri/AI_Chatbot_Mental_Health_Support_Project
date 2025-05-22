@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot for Mental Health Support</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="chat-container">
+        <h1>AI Chatbot for Mental Health Suport</h1>
+        <div class="chat-box" id="chat-box">
+            {% if conversation %}
+                {% for speaker, message in conversation %}
+                    <div class="message {{ speaker.lower() }}-message">
+                        <strong>{{ speaker }}:</strong> {{ message }}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="message bot-message">
+                    <strong>Bot:</strong> Hello! I'm here to help you with emotional support. Type your message below to start chatting.
+                </div>
+            {% endif %}
+        </div>
+        <div id="typing-indicator" style="display: none;">
+            <div class="message bot-message">
+                <strong>Typing...</strong> <span class="spinner"></span>
+            </div>
+        </div>
+        <form id="chat-form">
+            <input type="text" name="user_input" placeholder="Type your message..." autocomplete="off" required>
+            <button type="submit">Send</button>
+        </form>
+        <div class="button-group">
+            <form method="POST" action="/clear">
+                <button type="submit" class="clear-btn">Clear Chat</button>
+            </form>
+            <form method="POST" action="/end">
+                <button type="submit" class="end-btn">End Chat</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        // Handle form submission with AJAX
+        document.getElementById('chat-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const input = document.querySelector('input[name="user_input"]');
+            const userInput = input.value.trim();
+            if (!userInput) {
+                alert('Please enter a message to continue.');
+                input.value = '';
+                return;
+            }
+
+            // Append user message to chat box
+            const chatBox = document.getElementById('chat-box');
+            const userMessage = document.createElement('div');
+            userMessage.className = 'message user-message';
+            userMessage.innerHTML = `<strong>You:</strong> ${userInput}`;
+            chatBox.appendChild(userMessage);
+
+            // Show typing indicator
+            const typingIndicator = document.getElementById('typing-indicator');
+            typingIndicator.style.display = 'block';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Clear input
+            input.value = '';
+
+            // Send AJAX request to /chat endpoint
+            const formData = new FormData();
+            formData.append('user_input', userInput);
+
+            const startTime = Date.now();
+            fetch('/chat', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                const elapsedTime = Date.now() - startTime;
+                const remainingTime = Math.max(0, 300 - elapsedTime);
+                return new Promise(resolve => setTimeout(() => resolve(response), remainingTime));
+            })
+            .then(response => response.json())
+            .then(data => {
+                typingIndicator.style.display = 'none';
+
+                // Append bot response to chat box
+                const botMessage = document.createElement('div');
+                botMessage.className = 'message bot-message';
+                botMessage.innerHTML = `<strong>Bot:</strong> ${data.bot_response}`;
+                chatBox.appendChild(botMessage);
+
+                // Auto-scroll to bottom
+                chatBox.scrollTop = chatBox.scrollHeight;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                typingIndicator.style.display = 'none';
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'message bot-message';
+                errorMessage.innerHTML = `<strong>Bot:</strong> Sorry, something went wrong. Please try again.`;
+                chatBox.appendChild(errorMessage);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+        });
+
+        // Auto-scroll to the bottom on initial load
+        const chatBox = document.getElementById('chat-box');
+        chatBox.scrollTop = chatBox.scrollHeight;
+    </script>
+</body>
+</html>
