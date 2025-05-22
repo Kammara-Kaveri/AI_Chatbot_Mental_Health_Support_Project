@@ -5,13 +5,21 @@ This project is an AI-powered chatbot designed to provide mental health support 
 **Project Structure**
 
 app.py : The main Flask application that powers the web interface and handles user interactions.
+
 test_model.py: Loads the ML model and processes user inputs to generate responses.
+
 train_model.py: Script used to train the ML model, producing the model weights and configuration files.
+
 download_syntheticchat.py: Script to download the synthetic_therapy_conversation.csv dataset from Kaggle.
+
 templates/chat.html: The HTML template for the chat interface.
+
 static/style.css: CSS styles for the chat interface.
+
 requirements.txt: Lists the Python dependencies, including Flask, gunicorn, transformers, torch, and kaggle.
+
 Procfile: Configuration file for deploying the app on Render using Gunicorn.
+
 output/: Contains ML model configuration files (e.g., config.json, vocab.txt). Large files like model.safetensors and tokenizers.pkl were excluded to optimize deployment.
 
 **Setup and Usage**
