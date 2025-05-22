@@ -26,8 +26,11 @@ This project is an AI-powered chatbot designed to provide mental health support 
 ### Prerequisites
 
 Python 3.8+
+
 Git
+
 A Kaggle account and API key (for downloading the dataset)
+
 Access to the deployed app on Render (link provided by the project owner)
 
 ## Local Setup
@@ -61,6 +64,7 @@ python app.py
 -The synthetic_therapy_conversation.csv dataset is required for training the ML model but is excluded from the repository to reduce size. To download it:
 1. **Set Up Kaggle API:**
     -Install the Kaggle package: 'pip install kaggle'
+
     -Place your kaggle.json API key in ~/.kaggle/ (or C:\Users\<kammarakaveri>\.kaggle\ on Windows).
 2. **Run the Download Script:**
     ```python
@@ -92,7 +96,11 @@ The chatbot has been successfully deployed on Render. To deploy a new instance:
 4. Deploy the app and access it via the provided Render URL.
 
 ## Summary:
-This project was developed to create an ML-powered mental health support chatbot. We started by creating download_syntheticchat.py to download the synthetic_therapy_conversation.csv dataset from Kaggle. The dataset was processed to create processed_synthetic_chatbot_data.csv, which was used to train the ML model with train_model.py. The training process generated the output directory containing the model weights and configuration files. To optimize the repository for deployment, we excluded large files like model.safetensors, tokenizers.pkl, processed_synthetic_chatbot_data.csv, and synthetic_therapy_conversation.csv, while retaining essential configuration files in output/. We built a Flask web interface with app.py, styled it with static/style.css, and created a user-friendly chat UI in templates/chat.html. The project was configured for Render deployment with Procfile and requirements.txt, pushed to GitHub, and successfully deployed on Render, where it now runs seamlessly, ready to assist users with mental health support.
+This project focuses on developing an ML-powered mental health support chatbot. The project begins with download_syntheticchat.py to retrieve the synthetic_therapy_conversation.csv dataset from Kaggle. The dataset is then processed into processed_synthetic_chatbot_data.csv, which serves as the input for training the machine learning model using train_model.py. The training process generates an output/ directory containing model weights and configuration files.
+
+To optimize the repository for deployment, large files such as model.safetensors, tokenizers.pkl, processed_synthetic_chatbot_data.csv, and synthetic_therapy_conversation.csv are excluded, while essential configuration files are retained. 
+
+A Flask-based web interface is implemented via app.py, styled using static/style.css, and presented through a user-friendly UI in templates/chat.html.Deployment is configured using a Procfile and requirements.txt, and the complete application is pushed to GitHub. The chatbot is then deployed on Render, where it operates seamlessly to provide users with mental health support.
 
 ## Notes:
 - The ML model weights (model.safetensors) were excluded from the repository to reduce size. To test the ML - functionality locally, run train_model.py to regenerate the output directory.
