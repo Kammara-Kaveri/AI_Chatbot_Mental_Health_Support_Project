@@ -3,35 +3,55 @@ from flask import Flask, render_template, request, session, jsonify
 from test_model import generate_response_rule_based
 import uuid
 from datetime import datetime
-import os  # Added for environment variables
+import os
 
-# Set up logging configuration
+# Configure the root logger with a simple format (for Werkzeug/Flask logs)
 logging.basicConfig(
-    filename='session_logs.log',
     level=logging.INFO,
-    format='%(asctime)s [%(levelname)s] SessionID:%(session_id)s IP:%(ip)s - %(message)s'
+    format='%(asctime)s [%(levelname)s] - %(message)s',
+    force=True
 )
 
-app = Flask(__name__)
-# Use environment variable for secret key in production, fallback for development
-app.secret_key = os.getenv('FLASK_SECRET_KEY', 'your_secret_key_123')
+# Create a custom logger for the chatbot
+chatbot_logger = logging.getLogger('chatbot')
+chatbot_logger.setLevel(logging.INFO)
+
+# Create a file handler for session_logs.log
+file_handler = logging.FileHandler('session_logs.log')
+file_handler.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s [%(levelname)s] SessionID:%(session_id)s IP:%(ip)s - %(message)s')
+file_handler.setFormatter(formatter)
+
+# Add the handler to the chatbot logger
+chatbot_logger.addHandler(file_handler)
 
 # Custom filter to add session ID and IP to log records
 class SessionFilter(logging.Filter):
     def filter(self, record):
-        record.session_id = session.get('_id', 'N/A')  # Get session ID
-        record.ip = request.remote_addr if request.environ.get('HTTP_X_FORWARDED_FOR') is None else request.environ['HTTP_X_FORWARDED_FOR']
+        # Safely access session and request, default to 'N/A' if not in context
+        try:
+            record.session_id = session.get('_id', 'N/A')
+        except RuntimeError:
+            record.session_id = 'N/A'
+        
+        try:
+            record.ip = request.remote_addr if request.environ.get('HTTP_X_FORWARDED_FOR') is None else request.environ['HTTP_X_FORWARDED_FOR']
+        except RuntimeError:
+            record.ip = 'N/A'
         return True
 
-# Add the filter to the logger
-app.logger.addFilter(SessionFilter())
+# Add the filter to the chatbot logger's file handler
+file_handler.addFilter(SessionFilter())
+
+app = Flask(__name__)
+app.secret_key = os.getenv('FLASK_SECRET_KEY', 'your_secret_key_123')
 
 @app.before_request
 def before_request():
     # Assign a session ID if not present
     if '_id' not in session:
         session['_id'] = str(uuid.uuid4())
-        app.logger.info("New session started")
+        chatbot_logger.info("New session started")
 
 @app.route('/')
 def home():
@@ -42,7 +62,7 @@ def home():
 @app.route('/chat', methods=['POST'])
 def chat():
     user_input = request.form['user_input']
-    app.logger.info(f"User message: {user_input}")
+    chatbot_logger.info(f"User message: {user_input}")
     
     response = generate_response_rule_based(user_input)
     session['conversation'].append(('User', user_input))
@@ -53,14 +73,14 @@ def chat():
 
 @app.route('/clear', methods=['POST'])
 def clear():
-    app.logger.info("Chat cleared")
+    chatbot_logger.info("Chat cleared")
     session['conversation'] = []
     session.modified = True
     return jsonify({'status': 'cleared'})
 
 @app.route('/end', methods=['POST'])
 def end():
-    app.logger.info("Session ended")
+    chatbot_logger.info("Session ended")
     session.clear()
     return jsonify({'status': 'ended'})
 
