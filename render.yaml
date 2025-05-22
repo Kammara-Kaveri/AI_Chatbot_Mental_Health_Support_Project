@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: ai-chatbot-mental-health-support-project
+    env: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"
+    envVars:
+      - key: FLASK_SECRET_KEY
+        generateValue: true
+    preDeployCommand: "apt-get update && apt-get install -y default-jre"
