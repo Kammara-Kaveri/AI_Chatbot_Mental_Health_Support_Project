@@ -4,23 +4,23 @@ This project is an AI-powered chatbot designed to provide mental health support 
 
 **Project Structure**
 
--**app.py** : The main Flask application that powers the web interface and handles user interactions.
+**app.py** : The main Flask application that powers the web interface and handles user interactions.
 
--**test_model.py**: Loads the ML model and processes user inputs to generate responses.
+**test_model.py**: Loads the ML model and processes user inputs to generate responses.
 
--**train_model.py**: Script used to train the ML model, producing the model weights and configuration files.
+**train_model.py**: Script used to train the ML model, producing the model weights and configuration files.
 
--**download_syntheticchat.py**: Script to download the synthetic_therapy_conversation.csv dataset from Kaggle.
+**download_syntheticchat.py**: Script to download the synthetic_therapy_conversation.csv dataset from Kaggle.
 
--**templates/chat.html**: The HTML template for the chat interface.
+**templates/chat.html**: The HTML template for the chat interface.
 
--**static/style.css**: CSS styles for the chat interface.
+**static/style.css**: CSS styles for the chat interface.
 
--**requirements.txt**: Lists the Python dependencies, including Flask, gunicorn, transformers, torch, and kaggle.
+**requirements.txt**: Lists the Python dependencies, including Flask, gunicorn, transformers, torch, and kaggle.
 
--**Procfile**: Configuration file for deploying the app on Render using Gunicorn.
+**Procfile**: Configuration file for deploying the app on Render using Gunicorn.
 
--**output/**: Contains ML model configuration files (e.g., config.json, vocab.txt). Large files like model.safetensors and tokenizers.pkl were excluded to optimize deployment.
+**output/**: Contains ML model configuration files (e.g., config.json, vocab.txt). Large files like model.safetensors and tokenizers.pkl were excluded to optimize deployment.
 
 ## Setup and Usage
 ### Prerequisites
@@ -31,9 +31,11 @@ A Kaggle account and API key (for downloading the dataset)
 Access to the deployed app on Render (link provided by the project owner)
 
 ## Local Setup
+```python
 
 Clone the Repository:git clone <https://github.com/Kammara-Kaveri/AI_Chatbot_Mental_Health_Support_Project.git>
 cd AI_Chatbot_Mental_Health_Support
+```
 
 
 **Set Up a Virtual Environment**:
