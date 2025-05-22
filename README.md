@@ -22,7 +22,7 @@ This project is an AI-powered chatbot designed to provide mental health support 
 
 -**output/**: Contains ML model configuration files (e.g., config.json, vocab.txt). Large files like model.safetensors and tokenizers.pkl were excluded to optimize deployment.
 
-## Setup and Usage**
+## Setup and Usage
 ### Prerequisites
 
 Python 3.8+
@@ -69,7 +69,7 @@ python app.py
 - Note: Training requires significant computational resources and is best performed on a powerful machine.
 
 
-## Deployment on Render**
+## Deployment on Render:
 The chatbot has been successfully deployed on Render. To deploy a new instance:
 1. Push the repository to GitHub (already done).
 2. Create a new Web Service on Render.
@@ -81,7 +81,7 @@ The chatbot has been successfully deployed on Render. To deploy a new instance:
 ## Summary:
 This project was developed to create an ML-powered mental health support chatbot. We started by creating download_syntheticchat.py to download the synthetic_therapy_conversation.csv dataset from Kaggle. The dataset was processed to create processed_synthetic_chatbot_data.csv, which was used to train the ML model with train_model.py. The training process generated the output directory containing the model weights and configuration files. To optimize the repository for deployment, we excluded large files like model.safetensors, tokenizers.pkl, processed_synthetic_chatbot_data.csv, and synthetic_therapy_conversation.csv, while retaining essential configuration files in output/. We built a Flask web interface with app.py, styled it with static/style.css, and created a user-friendly chat UI in templates/chat.html. The project was configured for Render deployment with Procfile and requirements.txt, pushed to GitHub, and successfully deployed on Render, where it now runs seamlessly, ready to assist users with mental health support.
 
-## Notes
+## Notes:
 - The ML model weights (model.safetensors) were excluded from the repository to reduce size. To test the ML - functionality locally, run train_model.py to regenerate the output directory.
 - The deployed chatbot on Render is fully functional, with ML capabilities available after training if needed on the Render instance.
 
