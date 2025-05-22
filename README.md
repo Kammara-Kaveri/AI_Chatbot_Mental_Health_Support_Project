@@ -31,23 +31,29 @@ A Kaggle account and API key (for downloading the dataset)
 Access to the deployed app on Render (link provided by the project owner)
 
 ## Local Setup
-```python
 
-Clone the Repository:git clone <https://github.com/Kammara-Kaveri/AI_Chatbot_Mental_Health_Support_Project.git>
+**Clone the Repository:**
+```python
+git clone <https://github.com/Kammara-Kaveri/AI_Chatbot_Mental_Health_Support_Project.git>
 cd AI_Chatbot_Mental_Health_Support
 ```
 
-
 **Set Up a Virtual Environment**:
+```python
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
-
+```
 
 **Install Dependencies:**
+```python
 pip install -r requirements.txt
+```
 
 **Run the App Locally:**
+```python
 python app.py
+```
+
 - Open http://localhost:5000 in your browser to interact with the chatbot.
 - Note: To test the ML model locally, the output directory with model.safetensors is required. See the "Training the ML Model" section below to recreate it.
 
@@ -57,7 +63,9 @@ python app.py
     -Install the Kaggle package: 'pip install kaggle'
     -Place your kaggle.json API key in ~/.kaggle/ (or C:\Users\<kammarakaveri>\.kaggle\ on Windows).
 2. **Run the Download Script:**
+    ```python
     python download_syntheticchat.py
+    ```
     - This downloads synthetic_therapy_conversation.csv from Kaggle and saves it in the project directory.
 
 
@@ -66,7 +74,10 @@ python app.py
     - Run download_syntheticchat.py as described above to obtain synthetic_therapy_conversation.csv.
     - A processed version (processed_synthetic_chatbot_data.csv) was created during development but excluded to reduce repository size.
 2. **Train the Model:**
-    - Run the training script:python train_model.py
+    - Run the training script:
+    ```python
+    python train_model.py
+    ```
     - This trains the ML model using synthetic_therapy_conversation.csv and generates the output directory with model weights (model.safetensors) and tokenizer files.
 - Note: Training requires significant computational resources and is best performed on a powerful machine.
 
@@ -76,8 +87,8 @@ The chatbot has been successfully deployed on Render. To deploy a new instance:
 1. Push the repository to GitHub (already done).
 2. Create a new Web Service on Render.
 3. Connect the GitHub repository and configure the build settings:
-- Build Command: pip install -r requirements.txt
-- Start Command: gunicorn app:app (as specified in the Procfile)
+   - Build Command: pip install -r requirements.txt
+   - Start Command: gunicorn app:app (as specified in the Procfile)
 4. Deploy the app and access it via the provided Render URL.
 
 ## Summary:
