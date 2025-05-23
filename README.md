@@ -87,7 +87,7 @@ python app.py
 
 
 ## Deployment on Render:
-The chatbot has been successfully deployed on Render at [https://ai-chatbot-mental-health-support.onrender.comtext].To deploy a new instance:
+The chatbot has been successfully deployed on Render at [https://ai-chatbot-mental-health-support.onrender.com].To deploy a new instance:
 1. Pushed the repository to GitHub (already done).
 2. Created a new Web Service on Render.
 3. Connected the GitHub repository and configure the build settings:
