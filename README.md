@@ -31,7 +31,7 @@ Git
 
 A Kaggle account and API key (for downloading the dataset)
 
-Access to the deployed app on Render (link provided by the project owner)
+Access to the deployed app on Render :[https://ai-chatbot-mental-health-support.onrender.comtext]
 
 ## Local Setup
 
@@ -87,20 +87,24 @@ python app.py
 
 
 ## Deployment on Render:
-The chatbot has been successfully deployed on Render. To deploy a new instance:
-1. Push the repository to GitHub (already done).
-2. Create a new Web Service on Render.
-3. Connect the GitHub repository and configure the build settings:
-   - Build Command: pip install -r requirements.txt
-   - Start Command: gunicorn app:app (as specified in the Procfile)
-4. Deploy the app and access it via the provided Render URL.
+The chatbot has been successfully deployed on Render at [https://ai-chatbot-mental-health-support.onrender.comtext].To deploy a new instance:
+1. Pushed the repository to GitHub (already done).
+2. Created a new Web Service on Render.
+3. Connected the GitHub repository and configure the build settings:
+   -**Environment**: Docker
+   -**Dockerfile**: Ensured a Dockerfile is present in the repository to install Java (required for language_tool_python).
+4. Add the following environment variables:
+   - FLASK_SECRET_KEY: A secure random string 
+   - PORT: Set to 10000
+5. Deployed the app and access it via the provided Render URL.
 
 ## Summary:
 This project focuses on developing an ML-powered mental health support chatbot. The project begins with download_syntheticchat.py to retrieve the synthetic_therapy_conversation.csv dataset from Kaggle. The dataset is then processed into processed_synthetic_chatbot_data.csv, which serves as the input for training the machine learning model using train_model.py. The training process generates an output/ directory containing model weights and configuration files.
 
 To optimize the repository for deployment, large files such as model.safetensors, tokenizers.pkl, processed_synthetic_chatbot_data.csv, and synthetic_therapy_conversation.csv are excluded, while essential configuration files are retained. 
 
-A Flask-based web interface is implemented via app.py, styled using static/style.css, and presented through a user-friendly UI in templates/chat.html.Deployment is configured using a Procfile and requirements.txt, and the complete application is pushed to GitHub. The chatbot is then deployed on Render, where it operates seamlessly to provide users with mental health support.
+A Flask-based web interface is implemented via app.py, styled using static/style.css, and presented through a user-friendly UI in templates/chat.html.Deployment is configured using a Procfile and requirements.txt, and the complete application is pushed to GitHub and successfully deployed on Render using a Docker environment to support language_tool_python (requiring Java). 
+The app now runs seamlessly at [https://ai-chatbot-mental-health-support.onrender.com], ready to assist users with mental health support.. 
 
 ## Notes:
 - The ML model weights (model.safetensors) were excluded from the repository to reduce size. To test the ML - functionality locally, run train_model.py to regenerate the output directory.
