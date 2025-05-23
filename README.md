@@ -29,7 +29,8 @@ Python 3.8+
 
 Git
 
-A Kaggle account and API key (for downloading the dataset)
+A Kaggle account and API key (for downloading the dataset) or use this link to download: 
+        [https://www.kaggle.com/datasets/thedevastator/synthetic-therapy-conversations-dataset]
 
 Access to the deployed app on Render :[https://ai-chatbot-mental-health-support.onrender.com]
 
@@ -92,7 +93,7 @@ The chatbot has been successfully deployed on Render at [https://ai-chatbot-ment
 2. Created a new Web Service on Render.
 3. Connected the GitHub repository and configure the build settings:
    -**Environment**: Docker
-   -**Dockerfile**: Ensured a Dockerfile is present in the repository to install Java (required for language_tool_python).
+   -**Pythonfile**: Ensured a Python file is present in the repository.
 4. Add the following environment variables:
    - FLASK_SECRET_KEY: A secure random string 
    - PORT: Set to 10000
@@ -103,7 +104,7 @@ This project focuses on developing an ML-powered mental health support chatbot. 
 
 To optimize the repository for deployment, large files such as model.safetensors, tokenizers.pkl, processed_synthetic_chatbot_data.csv, and synthetic_therapy_conversation.csv are excluded, while essential configuration files are retained. 
 
-A Flask-based web interface is implemented via app.py, styled using static/style.css, and presented through a user-friendly UI in templates/chat.html.Deployment is configured using a Procfile and requirements.txt, and the complete application is pushed to GitHub and successfully deployed on Render using a Docker environment to support language_tool_python (requiring Java). 
+A Flask-based web interface is implemented via app.py, styled using static/style.css, and presented through a user-friendly UI in templates/chat.html.Deployment is configured using a Procfile and requirements.txt, and the complete application is pushed to GitHub and successfully deployed on Render using a Python environment. 
 The app now runs seamlessly at [https://ai-chatbot-mental-health-support.onrender.com], ready to assist users with mental health support.. 
 
 ## Notes:
