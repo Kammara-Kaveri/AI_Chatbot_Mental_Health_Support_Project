@@ -67,6 +67,7 @@ python app.py
     -Install the Kaggle package: 'pip install kaggle'
 
     -Place your kaggle.json API key in ~/.kaggle/ (or C:\Users\<kammarakaveri>\.kaggle\ on Windows).
+    
 2. **Run the Download Script:**
     ```python
     python download_syntheticchat.py
@@ -92,7 +93,7 @@ The chatbot has been successfully deployed on Render at [https://ai-chatbot-ment
 1. Pushed the repository to GitHub (already done).
 2. Created a new Web Service on Render.
 3. Connected the GitHub repository and configure the build settings:
-   -**Environment**: Docker
+   -**Environment**: Python
    -**Pythonfile**: Ensured a Python file is present in the repository.
 4. Add the following environment variables:
    - FLASK_SECRET_KEY: A secure random string 
@@ -112,3 +113,4 @@ The app now runs seamlessly at [https://ai-chatbot-mental-health-support.onrende
 - The deployed chatbot on Render is fully functional, with ML capabilities available after training if needed on the Render instance.
 
 
+## LINK: [https://ai-chatbot-mental-health-support.onrender.com]
