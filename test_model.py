@@ -6,11 +6,10 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from better_profanity import profanity
 import re
 from spellchecker import SpellChecker
-import language_tool_python
 
 # Initialize grammar and spelling checkers
 spell_checker = SpellChecker()
-tool = language_tool_python.LanguageTool('en-US')
+#tool = language_tool_python.LanguageTool('en-US')
 
 def correct_grammar_and_spelling(text):
     words = text.split()
@@ -22,8 +21,8 @@ def correct_grammar_and_spelling(text):
             corrected_word = spell_checker.correction(word)
             corrected_words.append(corrected_word if corrected_word else word)
     corrected_text = ' '.join(corrected_words)
-    matches = tool.check(corrected_text)
-    corrected_text = language_tool_python.utils.correct(corrected_text, matches)
+    #matches = tool.check(corrected_text)
+    #corrected_text = language_tool_python.utils.correct(corrected_text, matches)
     return corrected_text
 
 profanity.load_censor_words()
