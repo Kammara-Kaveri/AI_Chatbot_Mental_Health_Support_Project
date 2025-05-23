@@ -31,7 +31,7 @@ Git
 
 A Kaggle account and API key (for downloading the dataset)
 
-Access to the deployed app on Render :[https://ai-chatbot-mental-health-support.onrender.comtext]
+Access to the deployed app on Render :[https://ai-chatbot-mental-health-support.onrender.com]
 
 ## Local Setup
 
