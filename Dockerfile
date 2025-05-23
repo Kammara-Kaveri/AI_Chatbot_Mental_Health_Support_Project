@@ -14,8 +14,8 @@
    # Copy the rest of the application code
    COPY . .
 
-   # Expose the port your app runs on (Render requires this)
-   EXPOSE 10000
+   # Expose the port (Render will override this with the PORT env var)
+   EXPOSE $PORT
 
-   # Command to run the app with Gunicorn
-   CMD ["gunicorn", "--bind", "0.0.0.0:10000", "app:app"]
+   # Command to run the app with Gunicorn, binding to the PORT env var (default to 10000 if not set)
+   CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:$PORT app:app"]
