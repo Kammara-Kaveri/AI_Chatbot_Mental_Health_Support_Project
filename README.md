@@ -100,6 +100,9 @@ The chatbot has been successfully deployed on Render at [https://ai-chatbot-ment
    - PORT: Set to 10000
 5. Deployed the app and access it via the provided Render URL.
 
+## Screenshots:
+![Chatbot Interaction](results/interaction_example.png)
+
 ## Summary:
 This project focuses on developing an ML-powered mental health support chatbot. The project begins with download_syntheticchat.py to retrieve the synthetic_therapy_conversation.csv dataset from Kaggle. The dataset is then processed into processed_synthetic_chatbot_data.csv, which serves as the input for training the machine learning model using train_model.py. The training process generates an output/ directory containing model weights and configuration files.
 
